@@ -21,10 +21,10 @@ class DoubleConv(nn.Module):
 
     def forward(self, x):
         return self.double_conv(x)
-class VGG16(nn.Module):
+class subnet(nn.Module):
 
     def __init__(self, in_channels, n_classes):
-        super(VGG16, self).__init__()
+        super(subnet, self).__init__()
 
         self.in_channels = in_channels
         self.n_classes=n_classes
@@ -71,13 +71,12 @@ class VGG16(nn.Module):
         x = torch.squeeze(x,2)
 
         return x,cam
-class DoubleNet(nn.Module):
+class MDN(nn.Module):
 
-    def __init__(self, in_channels, n_classes,type):
-        super(DoubleNet, self).__init__()
-        if type=='VGG':
-            self.teachernet=VGG16(in_channels, n_classes)
-            self.studentnet=VGG16(in_channels, n_classes)
+    def __init__(self, in_channels, n_classes):
+        super(MDN, self).__init__()
+        self.teachernet=subnet(in_channels, n_classes)
+        self.studentnet=subnet(in_channels, n_classes)
 
     def forward(self, input_student,input_teacher):
         x_student,cam_student=self.studentnet(input_student)

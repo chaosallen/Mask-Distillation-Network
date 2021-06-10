@@ -105,14 +105,13 @@ if __name__ == '__main__':
     logging.info(f'Using device {device}')
     #loading network
     if opt.Network_mode != 'ST':
-        if opt.backbone=='VGG':
-            net = model.VGG16(in_channels=opt.in_channels, n_classes=opt.n_classes)
-        if opt.backbone=='ResNet50':
-            net = model.ResNet50(in_channels=opt.in_channels, n_classes=opt.n_classes)
+        net = model.subnet(in_channels=opt.in_channels, n_classes=opt.n_classes)
     else:
-        net = model.DoubleNet(in_channels=opt.in_channels, n_classes=opt.n_classes,type=opt.backbone)
+        net = model.MDN(in_channels=opt.in_channels, n_classes=opt.n_classes)
     #load trained model
-    restore_path = os.path.join(opt.saveroot, 'checkpoints', '26800.pth')
+    #restore_path = os.path.join(opt.saveroot, 'checkpoints', '26800.pth')
+    bestmodelpath= os.path.join(opt.saveroot, 'best_model',natsort.natsorted(os.listdir(os.path.join(opt.saveroot, 'best_model')))[-1])
+    restore_path = os.path.join(opt.saveroot, 'best_model',natsort.natsorted(os.listdir(os.path.join(opt.saveroot, 'best_model')))[-1])+'/'+os.listdir(bestmodelpath)[0]
     net.load_state_dict(
         torch.load(restore_path, map_location=device)
     )

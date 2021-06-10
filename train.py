@@ -163,12 +163,9 @@ if __name__ == '__main__':
     logging.info(f'Using device {device}')
     #loading network
     if opt.Network_mode != 'ST':
-        if opt.backbone=='VGG':
-            net = model.VGG16(in_channels=opt.in_channels, n_classes=opt.n_classes)
-        if opt.backbone=='ResNet50':
-            net = model.ResNet50(in_channels=opt.in_channels, n_classes=opt.n_classes)
+        net = model.subnet(in_channels=opt.in_channels, n_classes=opt.n_classes)
     else:
-        net = model.DoubleNet(in_channels=opt.in_channels, n_classes=opt.n_classes,type=opt.backbone)
+        net = model.MDN(in_channels=opt.in_channels, n_classes=opt.n_classes)
     net=torch.nn.DataParallel(net,[0]).cuda()
     print('parameters:',sum(param.numel() for param in net.parameters()))
     #load trained model
@@ -180,7 +177,7 @@ if __name__ == '__main__':
     try:
         train_net(net=net,device=device)
     except KeyboardInterrupt:
-        torch.save(net.state_dict(), 'INTERRUPTED.pth')
+        #torch.save(net.state_dict(), 'INTERRUPTED.pth')
         logging.info('Saved interrupt')
         try:
             sys.exit(0)

@@ -14,10 +14,9 @@ class BaseOptions():
 
     def initialize(self, parser):
         """Define the common options that are used in both training and test."""
-        parser.add_argument('--dataroot', default='/home/limingchao/PycharmProjects/untitled/Dataset/BJ_Dataset/Dataset', help='path to data')
+        parser.add_argument('--dataroot', default='/home/environment/limingchao/Dataset/BJ_Dataset/Dataset', help='path to data')
         parser.add_argument('--Network_mode', type=str, default='ST', help='S,T,ST')
-        parser.add_argument('--backbone', type=str, default='VGG', help='VGG,ResNet16')
-        parser.add_argument('--gpu_ids', type=str, default='1', help='gpu ids')
+        parser.add_argument('--gpu_ids', type=str, default='0', help='gpu ids')
         parser.add_argument('--input_size', type=list, default=[512,768,3], help='input data size separated with comma')
         parser.add_argument('--in_channels', type=int, default=3, help='input channels')
         parser.add_argument('--channels', type=int, default=64, help='channels')
